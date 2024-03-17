@@ -9,30 +9,50 @@ RUN apt-get update &&                             \
         build-essential                           \
         ca-certificates                           \
         cmake                                     \
-        libdaq-dev                                \
         libdumbnet-dev                            \
         libfl-dev                                 \
         libhwloc-dev                              \
         libluajit-5.1-dev                         \
         liblzma-dev                               \
+        libpcap-dev                               \
         libpcre3-dev                              \
         libssh-dev                                \
+        libtool                                   \
         pkg-config                                \
-        tcpdump                                   \
-        unzip                                     \
+        tar                                       \
         wget                                      \
         zlib1g-dev
 
-RUN mkdir /snort
+RUN mkdir /snort &&                               \
+    mkdir -p /etc/snort/rules
+
 WORKDIR   /snort
 
-RUN wget https://github.com/snort3/snort3/archive/refs/heads/master.zip && \
-    unzip master.zip &&                                                    \
-    cd snort3-master/ &&                                                   \
-    export snort_path=/snort &&                                            \
-    ./configure_cmake.sh --prefix="$snort_path" &&                         \
-    cd build &&                                                            \
+ENV DAQ_VERSION 3.0.14
+RUN wget https://www.snort.org/downloads/snortplus/libdaq-${DAQ_VERSION}.tar.gz &&   \
+    tar -xf libdaq-${DAQ_VERSION}.tar.gz &&                                          \
+    cd libdaq-${DAQ_VERSION} &&                                                      \
+    ./bootstrap &&                                                                   \
+    ./configure &&                                                                   \
+    make &&                                                                          \
+    make install
+
+ENV SNORT_VERSION 3.1.82.0
+RUN wget https://www.snort.org/downloads/snortplus/snort3-${SNORT_VERSION}.tar.gz && \
+    tar -xf snort3-${SNORT_VERSION}.tar.gz &&                                        \
+    cd snort3-${SNORT_VERSION} &&                                                    \
+    ./configure_cmake.sh --prefix=/snort &&                                          \
+    cd build &&                                                                      \
     make -j "$(nproc)" install
 
-ENV NETWORK_INTERFACE eth0
-CMD ["snort", "-T", "-i", "echo ${NETWORK_INTERFACE}", "-c", "/etc/snort/etc/snort.conf"]
+RUN wget https://www.snort.org/downloads/community/snort3-community-rules.tar.gz &&  \
+    tar -xf snort3-community-rules.tar.gz                                            \
+    cp snort3-community-rules/snort3-community.rules /etc/snort/rules
+
+RUN ldconfig
+
+RUN apt-get clean &&                                                                 \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*                                    \
+    /snort/snort-${SNORT_VERSION}.tar.gz /snort/libdaq-${DAQ_VERSION}.tar.gz /snort/snort3-community-rules.tar.gz 
+
+CMD ["/snort/bin/snort", "-T", "-i", "eth0"]
