@@ -35,7 +35,7 @@ RUN wget https://www.snort.org/downloads/snortplus/libdaq-${DAQ_VERSION}.tar.gz 
     ./bootstrap &&                                                                   \
     ./configure &&                                                                   \
     make &&                                                                          \
-    make install
+    make install                                                                  
 
 ENV SNORT_VERSION 3.1.82.0
 RUN wget https://www.snort.org/downloads/snortplus/snort3-${SNORT_VERSION}.tar.gz && \
@@ -46,13 +46,18 @@ RUN wget https://www.snort.org/downloads/snortplus/snort3-${SNORT_VERSION}.tar.g
     make -j "$(nproc)" install
 
 RUN wget https://www.snort.org/downloads/community/snort3-community-rules.tar.gz &&  \
-    tar -xf snort3-community-rules.tar.gz                                            \
-    cp snort3-community-rules/snort3-community.rules /etc/snort/rules
+    tar -xf snort3-community-rules.tar.gz &&                                         \
+    cp /snort/snort3-community-rules/snort3-community.rules /etc/snort/rules
 
 RUN ldconfig
 
 RUN apt-get clean &&                                                                 \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*                                    \
-    /snort/snort-${SNORT_VERSION}.tar.gz /snort/libdaq-${DAQ_VERSION}.tar.gz /snort/snort3-community-rules.tar.gz 
+    /snort/snort3-${SNORT_VERSION}.tar.gz                                            \
+    /snort/snort3-${SNORT_VERSION}                                                   \
+    /snort/libdaq-${DAQ_VERSION}.tar.gz                                              \
+    /snort/libdaq-${DAQ_VERSION}                                                     \
+    /snort/snort3-community-rules.tar.gz                                             \
+    /snort/snort3-community-rules
 
 CMD ["/snort/bin/snort", "-T", "-i", "eth0"]
