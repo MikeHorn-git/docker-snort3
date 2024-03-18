@@ -15,10 +15,20 @@ Unofficial [snort3](https://www.snort.org/snort3) IDS/IPS software docker image.
 * Trivy : 0 unfixed vulnerabilities.
 
 # Installation
+## Docker Hub
+```bash
+sudo docker pull mikehorn/snort3:latest
+```
+
 ## Build Yourself
 ```bash
 https://github.com/MikeHorn-git/docker-snort3.git
 cd docker-snort3/
+```
+
+### Docker Compose
+```bash
+sudo docker-compose up -d
 ```
 
 ### Dockerfile
@@ -32,5 +42,5 @@ sudo docker build -t "snort3" .
 
 # To-Do
 - [ ] Create and configure snort.conf file.
-- [ ] Add docker-compose yaml file.
-- [ ] Push image to Docker Hub.
+- [x] Add docker-compose.yml file.
+- [x] Push image to Docker Hub.
