@@ -1,9 +1,9 @@
 # Docker Snort3
 
-![image](https://github.com/MikeHorn-git/docker-snort3/assets/123373126/d544a143-7e37-4ee1-b2ad-99fc2d4ef5af)
+![image](https://github.com/MikeHorn-git/docker-snort3/assets/123373126/b822ff3c-d7d5-4f7d-97a0-9e937d4fef7b)
 
 # Warning
-Beta version. In progress, see the [To-Do]() section
+Beta version. In progress, see the [To-Do](https://github.com/MikeHorn-git/docker-snort3?tab=readme-ov-file#to-do) section
 
 # Description
 Unofficial [snort3](https://www.snort.org/snort3) docker image.
