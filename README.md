@@ -32,5 +32,5 @@ sudo docker build -t "dft" .
 
 # To-Do
 - [ ] Create and configure snort.conf file.
-- [ ] Add Docker-compose yaml file.
-- [ ] Push image to docker image.
+- [ ] Add docker-compose yaml file.
+- [ ] Push image to Docker Hub.
