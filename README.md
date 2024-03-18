@@ -17,13 +17,13 @@ Unofficial [snort3](https://www.snort.org/snort3) IDS/IPS software docker image.
 # Installation
 ## Build Yourself
 ```bash
-git clone https://github.com/MikeHorn-git/docker-forensic-toolbox.git
-cd docker-forensic-toolbox
+https://github.com/MikeHorn-git/docker-snort3.git
+cd docker-snort3/
 ```
 
 ### Dockerfile
 ```bash
-sudo docker build -t "dft" .
+sudo docker build -t "snort3" .
 ```
 
 # Security
