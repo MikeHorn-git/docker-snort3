@@ -6,7 +6,7 @@
 Beta version. In progress, see the [To-Do](https://github.com/MikeHorn-git/docker-snort3?tab=readme-ov-file#to-do) section
 
 # Description
-Unofficial [snort3](https://www.snort.org/snort3) docker image.
+Unofficial [snort3](https://www.snort.org/snort3) IDS/IPS software docker image.
 
 # Information
 * From : Debian Bookworm Slim.
