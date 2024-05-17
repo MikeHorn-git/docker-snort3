@@ -10,3 +10,6 @@ services:
     security_opt:
       - "no-new-privileges:true"
     read_only: true
+    environment:
+      - INTERFACE=eth0
+    network_mode: "host"

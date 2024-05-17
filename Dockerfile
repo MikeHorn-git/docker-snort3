@@ -29,35 +29,36 @@ RUN mkdir /snort &&                               \
 WORKDIR   /snort
 
 ENV DAQ_VERSION 3.0.14
-RUN wget https://www.snort.org/downloads/snortplus/libdaq-${DAQ_VERSION}.tar.gz &&   \
-    tar -xf libdaq-${DAQ_VERSION}.tar.gz &&                                          \
-    cd libdaq-${DAQ_VERSION} &&                                                      \
-    ./bootstrap &&                                                                   \
-    ./configure &&                                                                   \
-    make &&                                                                          \
+RUN wget https://www.snort.org/downloads/snortplus/libdaq-${DAQ_VERSION}.tar.gz &&      \
+    tar -xf libdaq-${DAQ_VERSION}.tar.gz &&                                             \
+    cd libdaq-${DAQ_VERSION} &&                                                         \
+    ./bootstrap &&                                                                      \
+    ./configure &&                                                                      \
+    make &&                                                                             \
     make install                                                                  
 
-ENV SNORT_VERSION 3.1.82.0
-RUN wget https://www.snort.org/downloads/snortplus/snort3-${SNORT_VERSION}.tar.gz && \
-    tar -xf snort3-${SNORT_VERSION}.tar.gz &&                                        \
-    cd snort3-${SNORT_VERSION} &&                                                    \
-    ./configure_cmake.sh --prefix=/snort &&                                          \
-    cd build &&                                                                      \
+ENV SNORT_VERSION 3.1.84.0
+RUN wget https://github.com/snort3/snort3/archive/refs/tags/${SNORT_VERSION}.tar.gz &&  \
+    tar -xf ${SNORT_VERSION}.tar.gz &&                                                  \
+    cd snort3-${SNORT_VERSION} &&                                                       \
+    ./configure_cmake.sh --prefix=/snort &&                                             \
+    cd build &&                                                                         \
     make -j "$(nproc)" install
 
-RUN wget https://www.snort.org/downloads/community/snort3-community-rules.tar.gz &&  \
-    tar -xf snort3-community-rules.tar.gz &&                                         \
+RUN wget https://www.snort.org/downloads/community/snort3-community-rules.tar.gz &&     \
+    tar -xf snort3-community-rules.tar.gz &&                                            \
     cp /snort/snort3-community-rules/snort3-community.rules /etc/snort/rules
 
 RUN ldconfig
 
-RUN apt-get clean &&                                                                 \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*                                    \
-    /snort/snort3-${SNORT_VERSION}.tar.gz                                            \
-    /snort/snort3-${SNORT_VERSION}                                                   \
-    /snort/libdaq-${DAQ_VERSION}.tar.gz                                              \
-    /snort/libdaq-${DAQ_VERSION}                                                     \
-    /snort/snort3-community-rules.tar.gz                                             \
+RUN apt-get clean &&                                                                    \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*                                       \
+    /snort/snort3-${SNORT_VERSION}.tar.gz                                               \
+    /snort/snort3-${SNORT_VERSION}                                                      \
+    /snort/libdaq-${DAQ_VERSION}.tar.gz                                                 \
+    /snort/libdaq-${DAQ_VERSION}                                                        \
+    /snort/snort3-community-rules.tar.gz                                                \
     /snort/snort3-community-rules
 
-CMD ["/snort/bin/snort", "-T", "-i", "eth0"]
+ENTRYPOINT ["/snort/bin/snort"]
+CMD ["-T", "-i", "${INTERFACE}"]
