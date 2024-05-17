@@ -24,16 +24,8 @@ sudo docker pull mikehorn/snort3:latest
 ```bash
 https://github.com/MikeHorn-git/docker-snort3.git
 cd docker-snort3/
-```
-
-### Docker Compose
-```bash
-sudo docker-compose up -d
-```
-
-### Dockerfile
-```bash
-sudo docker build -t "snort3" .
+# Put your newtork interface in the docker-compose.yml file. Default is eth0.
+sudo docker compose up
 ```
 
 # Security
