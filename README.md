@@ -33,6 +33,7 @@ sudo docker compose up
 * Install [docker-bench-security](https://github.com/docker/docker-bench-security) for hardening your host.
 
 # To-Do
+- [ ] Add feature like analyse pcap and so on.
 - [ ] Create and configure snort.conf file.
 - [x] Add docker-compose.yml file.
 - [x] Push image to Docker Hub.
