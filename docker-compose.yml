@@ -1,15 +1,13 @@
-version: '3'
-
 services:
   snort3:
     build: .
-    image: snort3
+    image: mikehorn/snort3
     container_name: snort3
     stdin_open: true
     tty: true
     security_opt:
       - "no-new-privileges:true"
     read_only: true
-    environment:
-      - INTERFACE=eth0
     network_mode: "host"
+    volumes:
+      - /home/ecole/snort:/files
