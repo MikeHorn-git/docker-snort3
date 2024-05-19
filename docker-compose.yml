@@ -10,4 +10,4 @@ services:
     read_only: true
     network_mode: "host"
     volumes:
-      - /home/ecole/snort:/files
+      - /home/$USER/snort:/files
