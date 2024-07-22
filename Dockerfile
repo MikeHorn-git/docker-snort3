@@ -31,31 +31,31 @@ RUN mkdir /snort && \
 
 WORKDIR /snort
 
-ENV DAQ_VERSION 3.0.14
-RUN wget https://www.snort.org/downloads/snortplus/libdaq-${DAQ_VERSION}.tar.gz &&      \
-    tar -xf libdaq-${DAQ_VERSION}.tar.gz &&                                             \
-    cd libdaq-${DAQ_VERSION} &&                                                         \
-    ./bootstrap &&                                                                      \
-    ./configure &&                                                                      \
-    make &&                                                                             \
-    make install &&                                                                     \
-    rm -rf /snort/libdaq-${DAQ_VERSION}.tar.gz                                          \
+ENV DAQ_VERSION 3.0.15
+RUN wget -O libdaq-${DAQ_VERSION}.tar.gz -nv https://codeload.github.com/snort3/libdaq/legacy.tar.gz/refs/tags/v${DAQ_VERSION}  &&  \
+    tar -xf libdaq-${DAQ_VERSION}.tar.gz &&                                                 \
+    cd snort3-libdaq-1b20345 &&                                                             \
+    ./bootstrap &&                                                                          \
+    ./configure &&                                                                          \
+    make &&                                                                                 \
+    make install &&                                                                         \
+    rm -rf /snort/libdaq-${DAQ_VERSION}.tar.gz                                              \
         /snort/libdaq-${DAQ_VERSION} 
  
-ENV SNORT_VERSION 3.1.84.0
-RUN wget https://github.com/snort3/snort3/archive/refs/tags/${SNORT_VERSION}.tar.gz &&  \
-    tar -xf ${SNORT_VERSION}.tar.gz &&                                                  \
-    cd snort3-${SNORT_VERSION} &&                                                       \
-    ./configure_cmake.sh --prefix=/snort &&                                             \
-    cd build &&                                                                         \
-    make -j "$(nproc)" install &&                                                       \
-    rm -rf /snort/${SNORT_VERSION}.tar.gz                                               \
+ENV SNORT_VERSION 3.3.1.0
+RUN wget -nv https://github.com/snort3/snort3/archive/refs/tags/${SNORT_VERSION}.tar.gz &&  \
+    tar -xf ${SNORT_VERSION}.tar.gz &&                                                      \
+    cd snort3-${SNORT_VERSION} &&                                                           \
+    ./configure_cmake.sh --prefix=/snort &&                                                 \
+    cd build &&                                                                             \
+    make -j "$(nproc)" install &&                                                           \
+    rm -rf /snort/${SNORT_VERSION}.tar.gz                                                   \
         /snort/snort3-${SNORT_VERSION} 
 
-RUN wget https://www.snort.org/downloads/community/snort3-community-rules.tar.gz &&     \
-    tar -xf snort3-community-rules.tar.gz &&                                            \
-    cp /snort/snort3-community-rules/snort3-community.rules /etc/snort/rules &&         \
-    rm -rf /snort/snort3-community-rules.tar.gz                                         \
+RUN wget -nv https://www.snort.org/downloads/community/snort3-community-rules.tar.gz &&     \
+    tar -xf snort3-community-rules.tar.gz &&                                                \
+    cp /snort/snort3-community-rules/snort3-community.rules /etc/snort/rules &&             \
+    rm -rf /snort/snort3-community-rules.tar.gz                                             \
         /snort/snort3-community-rules 
 
 RUN ldconfig
