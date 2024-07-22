@@ -2,16 +2,14 @@
 
 ![image](https://github.com/MikeHorn-git/docker-snort3/assets/123373126/b822ff3c-d7d5-4f7d-97a0-9e937d4fef7b)
 
-# Warning
-Beta version. In progress, see the [To-Do](https://github.com/MikeHorn-git/docker-snort3?tab=readme-ov-file#to-do) section
-
 # Description
 Unofficial [snort3](https://www.snort.org/snort3) IDS/IPS software docker image.
 
 # Information
-* From : Debian Bookworm Slim.
-* Size : 778 MB.
-* Time : Build from source. Take multiples minutes depending on your system.
+* From : Debian Bookworm Slim
+* Size : 747 MB
+* Time : Build from source. Take multiples minutes depending on your system
+* Version : 3.3.1.0
 * Trivy : 0 unfixed vulnerabilities.
 
 # Installation
@@ -29,8 +27,8 @@ docker compose build
 
 # Usage
 To use file from your host :
-* Create a directory in your home with the name snort.
-* Modify the docker-compose.yml, to replace the $USER var to your username in the volumes section.
+* Create a directory in your home with the name snort
+* Modify the docker-compose.yml, to replace the $USER var to your username in the volumes section
 * Place the files you want in host : /home/$USER/snort
 * In the docker container they are available at /files
 
@@ -44,8 +42,8 @@ docker compose run --rm snort3 -r /files/file.pcap
 ```
 
 # Security
-* The snort3 Docker image is scanned with [trivy](https://github.com/aquasecurity/trivy) to improve security.
-* Install [docker-bench-security](https://github.com/docker/docker-bench-security) for hardening your host.
+* Lint with [hadolint](https://github.com/hadolint/hadolint)
+* Scan with [trivy](https://github.com/aquasecurity/trivy)
 
 # To-Do
 - [ ] Create and configure snort.conf file.
