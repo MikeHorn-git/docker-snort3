@@ -31,10 +31,10 @@ RUN mkdir /snort && \
 
 WORKDIR /snort
 
-ENV DAQ_VERSION 3.0.15
-RUN wget -O libdaq-${DAQ_VERSION}.tar.gz -nv https://codeload.github.com/snort3/libdaq/legacy.tar.gz/refs/tags/v${DAQ_VERSION}  &&  \
-    tar -xf libdaq-${DAQ_VERSION}.tar.gz &&                                                 \
-    cd snort3-libdaq-1b20345 &&                                                             \
+ENV DAQ_VERSION 3.0.16
+RUN wget -nv https://github.com/snort3/libdaq/archive/refs/tags/v${DAQ_VERSION}.tar.gz  &&  \
+    tar -xf v${DAQ_VERSION}.tar.gz &&                                                 \
+    cd libdaq-${DAQ_VERSION} &&                                                             \
     ./bootstrap &&                                                                          \
     ./configure &&                                                                          \
     make &&                                                                                 \
@@ -42,7 +42,7 @@ RUN wget -O libdaq-${DAQ_VERSION}.tar.gz -nv https://codeload.github.com/snort3/
     rm -rf /snort/libdaq-${DAQ_VERSION}.tar.gz                                              \
         /snort/libdaq-${DAQ_VERSION} 
  
-ENV SNORT_VERSION 3.3.1.0
+ENV SNORT_VERSION 3.3.4.0
 RUN wget -nv https://github.com/snort3/snort3/archive/refs/tags/${SNORT_VERSION}.tar.gz &&  \
     tar -xf ${SNORT_VERSION}.tar.gz &&                                                      \
     cd snort3-${SNORT_VERSION} &&                                                           \
