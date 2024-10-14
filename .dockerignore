@@ -1,4 +1,5 @@
 .git
+.hadolint.yml
 docker-compose.yml
 README.md
 LICENSE
