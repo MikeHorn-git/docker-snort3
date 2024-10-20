@@ -1,0 +1,77 @@
+name: Update Snort3 and Libdaq Versions
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'  # Every Sunday
+  workflow_dispatch:      # Manual trigger
+
+jobs:
+  update_versions:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Get latest Snort3 version
+        run: |
+          LATEST_SNORT=$(curl -s https://api.github.com/repos/snort3/snort3/releases/latest | jq -r .tag_name)
+          echo "Latest Snort3 Version: $LATEST_SNORT"
+          echo "LATEST_SNORT=$LATEST_SNORT" >> $GITHUB_ENV
+
+      - name: Get latest Libdaq version
+        run: |
+          LATEST_LIBDAQ=$(curl -s https://api.github.com/repos/snort3/libdaq/releases/latest | jq -r .tag_name)
+          echo "Latest Libdaq Version: $LATEST_LIBDAQ"
+          echo "LATEST_LIBDAQ=$LATEST_LIBDAQ" >> $GITHUB_ENV
+
+      # Update Dockerfile for Libdaq
+      - name: Update Dockerfile for Libdaq
+        run: |
+          sed -i "s/ENV DAQ_VERSION .*/ENV DAQ_VERSION $LATEST_LIBDAQ/" Dockerfile
+          git diff --quiet || git add Dockerfile
+        id: libdaq_dockerfile_changes
+
+      # Update README for Libdaq
+      - name: Update README for Libdaq
+        run: |
+          sed -i "s/Libdaq Version : .*/Libdaq Version : $LATEST_LIBDAQ/" README.md
+          git diff --quiet || git add README.md
+        id: libdaq_readme_changes
+
+      # Commit and push Libdaq changes
+      - name: Commit and push Libdaq changes
+        if: steps.libdaq_dockerfile_changes.outputs.changed == 'true' || steps.libdaq_readme_changes.outputs.changed == 'true'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -m "Update Libdaq to $LATEST_LIBDAQ"
+          git push
+
+      # Update Dockerfile for Snort3
+      - name: Update Dockerfile for Snort3
+        run: |
+          sed -i "s/ENV SNORT_VERSION .*/ENV SNORT_VERSION $LATEST_SNORT/" Dockerfile
+          git diff --quiet || git add Dockerfile
+        id: snort_dockerfile_changes
+
+      # Update README for Snort3
+      - name: Update README for Snort3
+        run: |
+          sed -i "s/Snort Version : .*/Snort Version : $LATEST_SNORT/" README.md
+          git diff --quiet || git add README.md
+        id: snort_readme_changes
+
+      # Commit and push Snort3 changes
+      - name: Commit and push Snort3 changes
+        if: steps.snort_dockerfile_changes.outputs.changed == 'true' || steps.snort_readme_changes.outputs.changed == 'true'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -m "Update Snort3 to $LATEST_SNORT"
+          git push
